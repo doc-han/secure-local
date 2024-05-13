@@ -1,0 +1,39 @@
+{
+  "name": "secure-local",
+  "version": "1.0.0",
+  "main": "./build/index.cjs.js",
+  "license": "MIT",
+  "dependencies": {},
+  "scripts": {
+    "test:env": "yarn test:clear && yarn test:browser-build && yarn test:cjs-build && yarn test:esm-build && yarn test:server",
+    "test:browser-build": "esbuild ./src/index.ts --bundle --minify --outfile=./test-build/index.browser.js",
+    "test:cjs-build": "esbuild ./src/index.ts --bundle --format=cjs --minify --platform=node --outfile=./test-build/index.cjs.js",
+    "test:esm-build": "esbuild ./src/index.ts --bundle --format=esm --minify --platform=node --outfile=./test-build/index.esm.js",
+    "test:server": "cp -p ./tests/index.html ./test-build/ && http-server ./test-build -p 3024",
+    "test:clear": "rm -rf ./test-build",
+    "test": "yarn playwright test",
+    "build:browser-build": "esbuild ./src/index.ts --bundle --minify --outfile=./build/index.browser.js",
+    "build:cjs-build": "esbuild ./src/index.ts --bundle --format=cjs --minify --platform=node --outfile=./build/index.cjs.js",
+    "build:esm-build": "esbuild ./src/index.ts --bundle --format=esm --minify --platform=node --outfile=./build/index.esm.js",
+    "build:clear": "rm -rf ./test-build",
+    "build": "yarn build:clear && yarn build:browser-build && yarn build:cjs-build && yarn build:esm-build"
+  },
+  "files": [
+    "./build",
+    "tsconfig.json",
+    "README.md"
+  ],
+  "exports": {
+    "import": "./build/index.esm.js",
+    "require": "./build/index.cjs.js"
+  },
+  "types": "",
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.11",
+    "esbuild": "^0.21.1",
+    "http-server": "^14.1.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5"
+  }
+}
